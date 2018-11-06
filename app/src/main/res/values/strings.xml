@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">QuickPantry</string>
+
+    <string-array name="fragment_tabs">
+        <item>Pantry</item>
+        <item>Recipes</item>
+    </string-array>
+
+</resources>
