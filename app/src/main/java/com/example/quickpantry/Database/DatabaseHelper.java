@@ -18,6 +18,9 @@ import io.realm.RealmResults;
 public class DatabaseHelper {
     private static Realm _realm = null;
 
+    // Private so you can't initialize a copy of this class
+    private DatabaseHelper(){}
+
     /**
      * Initialize the realm within this class
      * @param context   The context to create this realm within

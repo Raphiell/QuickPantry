@@ -20,6 +20,10 @@ public class Item extends RealmObject {
 
     private String image;
 
+    //private int Test;
+
+
+
     public long getId() {
         return id;
     }
