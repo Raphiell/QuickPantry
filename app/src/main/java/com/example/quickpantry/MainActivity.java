@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private String[] tabItems;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
