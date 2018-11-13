@@ -5,10 +5,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.quickpantry.Database.Category;
 import com.example.quickpantry.Database.DatabaseHelper;
 import com.example.quickpantry.Database.Item;
 
 import java.util.Date;
+
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,13 +38,19 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the Realm
         DatabaseHelper.InitializeRealm(this);
 
-        // Delete all items
+        // Delete all items and categories
         DatabaseHelper.DeleteAll(Item.class);
+        DatabaseHelper.DeleteAll(Category.class);
+
+
+        //Create A Category
+        Category category = DatabaseHelper.AddCategory("Produce");
+        Category category2 = DatabaseHelper.AddCategory("Pantry");
 
         // Add an item
-        DatabaseHelper.AddItem("Fudge bars", "A few", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (20)), "");
-        DatabaseHelper.AddItem("Peanut Butter bars", "Lots", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (7)), "");
-        DatabaseHelper.AddItem("Chocolate bars", "7", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (1)), "");
+        DatabaseHelper.AddItem("Fudge bars", "A few", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (20)), "", category);
+        DatabaseHelper.AddItem("Peanut Butter bars", "Lots", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (7)), "", category);
+        DatabaseHelper.AddItem("Chocolate bars", "7", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (1)), "", category2);
 
     } // On create
 

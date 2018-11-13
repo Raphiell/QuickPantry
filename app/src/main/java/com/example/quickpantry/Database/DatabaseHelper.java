@@ -9,12 +9,6 @@ import java.util.Set;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-/**
- * TODO:
- * Add AddItem(Item item)
- * Add AddCategory(...)
- */
-
 public class DatabaseHelper {
     private static Realm _realm = null;
 
@@ -50,49 +44,7 @@ public class DatabaseHelper {
     }
 
     /**
-     * Creates and adds a new item to the item table
-     * @param name          Name of the item
-     * @param amount        Amount of the item
-     * @param brand         Brand of the item
-     * @param purchased     Date item was purchased
-     * @param bestBefore    Best before date of item
-     * @param image         Image name for item
-     * @return              Returns the item created, or null if Realm wasn't initialized via SetRealm(realm)
-     */
-    public static Item AddItem(String name, String amount, String brand, Date purchased, Date bestBefore, String image)
-    {
-        // Check if the realm was set yet
-        if(_realm != null) {
-            // Start transaction
-            _realm.beginTransaction();
-
-            // Create object and set properties
-            Item item = new Item();
-            item.setName(name);
-            item.setAmount(amount);
-            item.setBrand(brand);
-            item.setBestBefore(bestBefore);
-            item.setPurchased(purchased);
-            item.setImage(image);
-
-            // Grab newest id
-            item.setId(NextId(Item.class));
-
-            // Add to database
-            _realm.copyToRealm(item);
-
-            // End transaction
-            _realm.commitTransaction();
-
-            // Return the created item
-            return item;
-        }
-
-        return null;
-    }
-
-    /**
-     * Deletes all records of the specified model class, does nothing if Realm wasn't set through SetRealm(realm)
+     * Deletes all records of the specified model class, does nothing if Realm wasn't set through Initialize Realm or SetRealm
      * @param _class    Model to delete
      */
     public static void DeleteAll(Class _class)
@@ -128,5 +80,52 @@ public class DatabaseHelper {
         {
             return -1;
         }
+    }
+
+    public static Item AddItem(String name, String amount, String brand, Date purchased, Date bestBefore, String image, Category category)
+    {
+        // Begin the transaction
+        _realm.beginTransaction();
+
+        // Create a new managed object
+        Item item = _realm.createObject(Item.class, NextId(Item.class));
+
+        // This is unmanaged
+        // Item item = new Item()
+
+        // Set it's properties
+        item.setName(name);
+        item.setAmount(amount);
+        item.setBrand(brand);
+        item.setPurchased(purchased);
+        item.setBestBefore(bestBefore);
+        item.setImage(image);
+
+        // Category needs to be a managed object
+        category.getItems().add(item);
+        // Add inverse relationship
+        item.setCategory(category);
+
+        // Commit
+        _realm.commitTransaction();
+
+        return item;
+    }
+
+    public static Category AddCategory(String name)
+    {
+        // Begin transaction
+        _realm.beginTransaction();
+
+        // Create new category
+        Category category = _realm.createObject(Category.class, NextId(Category.class));
+
+        // Set properties
+        category.setName(name);
+
+        // Commit
+        _realm.commitTransaction();
+
+        return category;
     }
 }

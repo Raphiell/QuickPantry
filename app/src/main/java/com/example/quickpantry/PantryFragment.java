@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.quickpantry.Database.DatabaseHelper;
 import com.example.quickpantry.Database.Item;
+import com.example.quickpantry.Database.Category;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -41,19 +43,25 @@ public class PantryFragment extends Fragment {
         Realm realm = Realm.getDefaultInstance();
 
         // Grab items
-        RealmResults<Item> items = realm.where(Item.class).findAll();
+        //RealmResults<Item> items = realm.where(Item.class).findAll();
+
+        // Grab all items in produce category
+        //Category category = realm.where(Category.class).findFirst();
+
+        // Grab an last item from this category - Peanut butter bars
+        //Item item = category.getItems().last();
 
         // Grab last added item - Chocolate bars
-        Item item = realm.where(Item.class).findAll().last();
+        //Item item = realm.where(Item.class).findAll().last();
 
         // Grab first available item - Fudge bars
-        //Item item = realm.where(Item.class).findFirst();
+        Item item = realm.where(Item.class).findFirst();
+
 
         // Set the textviews to something
         tvOne.setText("Name: " + item.getName());
         tvTwo.setText("Amount: " + item.getAmount());
         tvThree.setText("Purchased: " + item.getPurchased().toString());
         tvFour.setText("Best Before: " + item.getBestBefore().toString());
-//        tvFour.setText("Total Items: " + String.valueOf(items.size()));
     }
 }

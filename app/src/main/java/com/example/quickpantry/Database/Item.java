@@ -3,7 +3,9 @@ package com.example.quickpantry.Database;
 import java.util.Date;
 
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 import io.realm.annotations.Index;
+import io.realm.annotations.LinkingObjects;
 import io.realm.annotations.PrimaryKey;
 
 // Item model, will contain information about what a pantry item is
@@ -20,9 +22,18 @@ public class Item extends RealmObject {
 
     private String image;
 
-    //private int Test;
+    private Category category;
 
+    // Auto generate example
+    private String example;
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public long getId() {
         return id;
@@ -79,9 +90,4 @@ public class Item extends RealmObject {
     public void setImage(String image) {
         this.image = image;
     }
-
-    // References
-    // This DOES NOT WORK, causes build errors in the generated code
-    // private RealmObject category;
-
 }
