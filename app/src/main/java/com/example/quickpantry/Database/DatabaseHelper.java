@@ -43,6 +43,8 @@ public class DatabaseHelper {
         _realm = realm;
     }
 
+    public static Realm GetRealm() { return _realm; }
+
     /**
      * Deletes all records of the specified model class, does nothing if Realm wasn't set through Initialize Realm or SetRealm
      * @param _class    Model to delete
