@@ -6,28 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvOne"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tab" />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvTwo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tab" />
-
-    <TextView
-        android:id="@+id/tvThree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tab" />
-
-    <TextView
-        android:id="@+id/tvFour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tab" />
+    </ListView>
 
 </LinearLayout>
