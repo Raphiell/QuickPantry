@@ -13,12 +13,13 @@ import com.example.quickpantry.Database.Item;
 import com.example.quickpantry.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemAdapter extends ArrayAdapter<Item> {
-    private ArrayList<Item> _items;
+    private List<Item> _items;
     private Context _context;
 
-    public ItemAdapter(Context context, int resource, ArrayList<Item> items) {
+    public ItemAdapter(Context context, int resource, List<Item> items) {
         super(context, resource, items);
         _items = items;
         _context = context;
