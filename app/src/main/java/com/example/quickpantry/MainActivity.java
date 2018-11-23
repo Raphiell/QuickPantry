@@ -35,22 +35,8 @@ public class MainActivity extends AppCompatActivity {
         // Setup the tabs
         setupTabs();
 
-        // Initialize the Realm
-        DatabaseHelper.InitializeRealm(this);
-
-        // Delete all items and categories
-        DatabaseHelper.DeleteAll(Item.class);
-        DatabaseHelper.DeleteAll(Category.class);
-
-
-        //Create A Category
-        Category category = DatabaseHelper.AddCategory("Produce");
-        Category category2 = DatabaseHelper.AddCategory("Pantry");
-
-        // Add an item
-        DatabaseHelper.AddItem("Fudge bars", "A few", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (20)), "", category);
-        DatabaseHelper.AddItem("Peanut Butter bars", "Lots", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (7)), "", category);
-        DatabaseHelper.AddItem("Chocolate bars", "7", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (1)), "", category2);
+        // Example data
+//        exampleData();
 
     } // On create
 
@@ -85,5 +71,24 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void exampleData() {
+        // Initialize the Realm
+        DatabaseHelper.InitializeRealm(this);
+
+        // Delete all items and categories
+        DatabaseHelper.DeleteAll(Item.class);
+        DatabaseHelper.DeleteAll(Category.class);
+
+
+        //Create A Category
+        Category category = DatabaseHelper.AddCategory("Produce");
+        Category category2 = DatabaseHelper.AddCategory("Pantry");
+
+        // Add an item
+        DatabaseHelper.AddItem("Fudge bars", "A few", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (20)), "", category);
+        DatabaseHelper.AddItem("Peanut Butter bars", "Lots", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (7)), "", category);
+        DatabaseHelper.AddItem("Chocolate bars", "7", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (1)), "", category2);
     }
 }
