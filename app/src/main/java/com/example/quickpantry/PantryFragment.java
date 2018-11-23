@@ -1,17 +1,22 @@
 package com.example.quickpantry;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.quickpantry.Database.DatabaseHelper;
 import com.example.quickpantry.Database.Item;
 import com.example.quickpantry.Database.Category;
+import com.example.quickpantry.ListView.ItemAdapter;
+
+import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -34,8 +39,22 @@ public class PantryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Grab the text view and change it
-        TextView tvOne = getView().findViewById(R.id.tvOne);
-        TextView tvTwo = getView().findViewById(R.id.tvTwo);
+        ListView listView = getView().findViewById(R.id.lvPantryItems);
+
+        // Setup the array adpater
+        ItemAdapter itemAdapter = new ItemAdapter(getContext(),R.layout.list_item, DatabaseHelper.GetRealm().where(Item.class).findAll());
+
+        // Add it to the list view
+        listView.setAdapter(itemAdapter);
+
+        // Notify of changes
+        itemAdapter.notifyDataSetChanged();
+
+    }
+}
+
+/*
+TextView tvTwo = getView().findViewById(R.id.tvTwo);
         TextView tvThree = getView().findViewById(R.id.tvThree);
         TextView tvFour = getView().findViewById(R.id.tvFour);
 
@@ -62,5 +81,4 @@ public class PantryFragment extends Fragment {
         tvTwo.setText("Amount: " + item.getAmount());
         tvThree.setText("Purchased: " + item.getPurchased().toString());
         tvFour.setText("Best Before: " + item.getBestBefore().toString());
-    }
-}
+ */

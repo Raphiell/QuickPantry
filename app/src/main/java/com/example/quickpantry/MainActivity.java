@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setupTabs();
 
         // Example data
-//        exampleData();
+        exampleData();
 
     } // On create
 
