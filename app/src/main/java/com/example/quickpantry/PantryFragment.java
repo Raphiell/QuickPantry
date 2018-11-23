@@ -46,17 +46,16 @@ public class PantryFragment extends Fragment {
         //RealmResults<Item> items = realm.where(Item.class).findAll();
 
         // Grab all items in produce category
-        //Category category = realm.where(Category.class).findFirst();
+        // Category category = realm.where(Category.class).findFirst();
 
         // Grab an last item from this category - Peanut butter bars
-        //Item item = category.getItems().last();
+        // Item item = category.getItems().last();
 
         // Grab last added item - Chocolate bars
-        //Item item = realm.where(Item.class).findAll().last();
+        Item item = realm.where(Item.class).findAll().last();
 
         // Grab first available item - Fudge bars
-        Item item = realm.where(Item.class).findFirst();
-
+        //Item item = realm.where(Item.class).findFirst();
 
         // Set the textviews to something
         tvOne.setText("Name: " + item.getName());
