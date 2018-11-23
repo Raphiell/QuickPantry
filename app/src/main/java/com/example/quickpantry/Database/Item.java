@@ -24,9 +24,6 @@ public class Item extends RealmObject {
 
     private Category category;
 
-    // Auto generate example
-    private String example;
-
     public Category getCategory() {
         return category;
     }
