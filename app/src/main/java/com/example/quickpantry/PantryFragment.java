@@ -3,6 +3,7 @@ package com.example.quickpantry;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -30,6 +32,10 @@ import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+
+/**
+ * TODO: Remove the dumb popup, just make another activity
+ */
 
 public class PantryFragment extends Fragment {
 
@@ -65,42 +71,9 @@ public class PantryFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Yoooo", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+
             }
         });
-
-        // Create the Popup Window for new item
-        PopupWindow window = new PopupWindow(getContext());
-        window.showAtLocation(getView(), Gravity.BOTTOM,10,10);
     }
 }
-
-/*
-TextView tvTwo = getView().findViewById(R.id.tvTwo);
-        TextView tvThree = getView().findViewById(R.id.tvThree);
-        TextView tvFour = getView().findViewById(R.id.tvFour);
-
-        // Grab the realm instance
-        Realm realm = Realm.getDefaultInstance();
-
-        // Grab items
-        //RealmResults<Item> items = realm.where(Item.class).findAll();
-
-        // Grab all items in produce category
-        // Category category = realm.where(Category.class).findFirst();
-
-        // Grab an last item from this category - Peanut butter bars
-        // Item item = category.getItems().last();
-
-        // Grab last added item - Chocolate bars
-        Item item = realm.where(Item.class).findAll().last();
-
-        // Grab first available item - Fudge bars
-        //Item item = realm.where(Item.class).findFirst();
-
-        // Set the textviews to something
-        tvOne.setText("Name: " + item.getName());
-        tvTwo.setText("Amount: " + item.getAmount());
-        tvThree.setText("Purchased: " + item.getPurchased().toString());
-        tvFour.setText("Best Before: " + item.getBestBefore().toString());
- */
