@@ -12,12 +12,14 @@ import android.widget.TextView;
 import com.example.quickpantry.Database.Item;
 import com.example.quickpantry.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemAdapter extends ArrayAdapter<Item> {
     private List<Item> _items;
     private Context _context;
+    private SimpleDateFormat _formatter = new SimpleDateFormat("E, MMM dd yyyy");
 
     public ItemAdapter(Context context, int resource, List<Item> items) {
         super(context, resource, items);
@@ -47,8 +49,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         // If the item wasn't null, we can populate fields
         if(item != null)
         {
-            TextView tvName = view.findViewById(R.id.tvName);
-            tvName.setText(item.getBrand() + " " + item.getName());
+            ((TextView)view.findViewById(R.id.tvName)).setText(item.getBrand() + " " + item.getName());
+            ((TextView)view.findViewById(R.id.tvAmount)).setText("I have " + item.getAmount());
+            ((TextView)view.findViewById(R.id.tvBestBefore)).setText("Expires " + _formatter.format(item.getBestBefore()));
         }
 
         // Return the view we created
