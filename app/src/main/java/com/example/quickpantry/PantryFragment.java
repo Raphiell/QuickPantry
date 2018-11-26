@@ -1,15 +1,23 @@
 package com.example.quickpantry;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.quickpantry.Database.DatabaseHelper;
 import com.example.quickpantry.Database.Item;
@@ -50,6 +58,20 @@ public class PantryFragment extends Fragment {
         // Notify of changes
         itemAdapter.notifyDataSetChanged();
 
+        // Get floating action button
+        FloatingActionButton fab = getView().findViewById(R.id.fabAddItem);
+
+        // Set on click listener
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Yoooo", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Create the Popup Window for new item
+        PopupWindow window = new PopupWindow(getContext());
+        window.showAtLocation(getView(), Gravity.BOTTOM,10,10);
     }
 }
 
