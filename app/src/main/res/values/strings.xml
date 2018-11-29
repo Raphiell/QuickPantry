@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">QuickPantry</string>
+    <string name="save">Save</string>
+    <string name="name">Name</string>
+    <string name="brand">Brand</string>
+    <string name="amount">Amount</string>
+    <string name="purchased">Purchased on</string>
+    <string name="bestbefore">Best Before</string>
 
     <string-array name="fragment_tabs">
         <item>Pantry</item>
