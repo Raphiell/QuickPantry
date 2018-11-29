@@ -1,6 +1,7 @@
 package com.example.quickpantry.ListView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,10 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.quickpantry.Database.Item;
+import com.example.quickpantry.ItemActivity;
 import com.example.quickpantry.R;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemAdapter extends ArrayAdapter<Item> {
@@ -53,6 +54,15 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             ((TextView)view.findViewById(R.id.tvAmount)).setText("I have " + item.getAmount());
             ((TextView)view.findViewById(R.id.tvBestBefore)).setText("Expires " + _formatter.format(item.getBestBefore()));
         }
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ItemActivity.class);
+                intent.putExtra("item", item.getId());
+                getContext().startActivity(intent);
+            }
+        });
 
         // Return the view we created
         return view;
