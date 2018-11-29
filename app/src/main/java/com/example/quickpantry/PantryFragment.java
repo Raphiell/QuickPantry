@@ -74,7 +74,7 @@ public class PantryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), ItemActivity.class);
-                intent.putExtra("new", true);
+                intent.putExtra("mode", "new");
 
                 startActivity(intent);
             }
