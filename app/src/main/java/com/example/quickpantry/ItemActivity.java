@@ -1,5 +1,6 @@
 package com.example.quickpantry;
 
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +23,7 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.codetroopers.betterpickers.calendardatepicker.MonthAdapter;
 import com.example.quickpantry.Database.Category;
 import com.example.quickpantry.Database.DatabaseHelper;
+import com.example.quickpantry.Database.Item;
 
 
 public class ItemActivity extends AppCompatActivity {
@@ -28,6 +33,9 @@ public class ItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
+
+        // Get intent
+        Intent intent = getIntent();
 
         // Grab all categories
         final Object[] categories = DatabaseHelper.GetRealm().where(Category.class).findAll().toArray();
@@ -50,6 +58,14 @@ public class ItemActivity extends AppCompatActivity {
 
         // Grab and set Save button
         Button btnSaveItem = findViewById(R.id.btnSaveItem);
+        Button btnCancel = findViewById(R.id.btnCancel);
+        Button btnDelete = findViewById(R.id.btnDelete);
+
+        // If this is a new item, no delete is needed
+        if(intent.getStringExtra("mode").equals("new"))
+        {
+            btnDelete.setEnabled(false);
+        }
 
         // Grab values from fields
         etName = findViewById(R.id.etName);
@@ -72,6 +88,32 @@ public class ItemActivity extends AppCompatActivity {
         // Setup on click listeners
         etPurchased.setOnClickListener(datePickerClickListener((EditText)etPurchased));
         etBestBefore.setOnClickListener(datePickerClickListener((EditText)etBestBefore));
+
+        // Potential item to edit
+        Item item;
+
+        // Date format
+        DateFormat format = new SimpleDateFormat("yyyy/mm/dd");
+
+        // If in edit mode, grab the passed item and fill out the fields
+        if(intent.getStringExtra("mode").equals("edit"))
+        {
+            item = DatabaseHelper.GetRealm().where(Item.class).equalTo("id", String.valueOf(intent.getIntExtra("item", 1))).findFirst();
+
+            etName.setText(item.getName());
+            etBrand.setText(item.getBrand());
+            etAmount.setText(item.getAmount());
+
+            try {
+                etPurchased.setText(format.parse(item.getPurchased().toString()).toString());
+                etBestBefore.setText(format.parse(item.getBestBefore().toString()).toString());
+            }
+            catch(ParseException e)
+            {
+                Toast.makeText(getApplicationContext(), "Error reading date", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
 
         btnSaveItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +140,13 @@ public class ItemActivity extends AppCompatActivity {
             }
         });
 
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // If cancel is clicked, just exit
+                finish();
+            }
+        });
     }
 
     /**
