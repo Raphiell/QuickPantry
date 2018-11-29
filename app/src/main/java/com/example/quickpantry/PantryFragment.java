@@ -35,9 +35,11 @@ import io.realm.RealmResults;
 
 /**
  * TODO: Remove the dumb popup, just make another activity
+ * TODO: Add the 'back' <- button
  */
 
 public class PantryFragment extends Fragment {
+    private ItemAdapter itemAdapter;
 
     // Required empty constructor
     public PantryFragment() {}
@@ -56,7 +58,7 @@ public class PantryFragment extends Fragment {
         ListView listView = getView().findViewById(R.id.lvPantryItems);
 
         // Setup the array adpater
-        ItemAdapter itemAdapter = new ItemAdapter(getContext(),R.layout.list_item, DatabaseHelper.GetRealm().where(Item.class).findAll());
+        itemAdapter = new ItemAdapter(getContext(),R.layout.list_item, DatabaseHelper.GetRealm().where(Item.class).findAll());
 
         // Add it to the list view
         listView.setAdapter(itemAdapter);
@@ -71,9 +73,17 @@ public class PantryFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(getContext(), ItemActivity.class);
+                intent.putExtra("new", true);
 
+                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        itemAdapter.notifyDataSetChanged();
     }
 }
