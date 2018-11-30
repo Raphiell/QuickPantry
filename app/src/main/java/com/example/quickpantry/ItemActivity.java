@@ -1,8 +1,10 @@
 package com.example.quickpantry;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.FormatException;
 import android.provider.ContactsContract;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -162,6 +164,40 @@ public class ItemActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // If cancel is clicked, just exit
                 finish();
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Are you sure?
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i)
+                        {
+                            // Yes
+                            case DialogInterface.BUTTON_POSITIVE:
+                                // Delete record
+                                DatabaseHelper.GetRealm().executeTransaction(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        realm.where(Item.class).equalTo("id", intent.getLongExtra("id", -1)).findFirst().deleteFromRealm();
+
+                                    }
+                                });
+                                // Return
+                                finish();
+                                break;
+                            // No
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                // Do nothing
+                                break;
+                        }
+                    }
+                };
+                builder.setMessage("Are you sure you want to delete this item?").setPositiveButton("Yes", listener).setNegativeButton("Cancel", listener).show();
             }
         });
     }
