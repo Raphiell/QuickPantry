@@ -1,6 +1,7 @@
 package com.example.quickpantry;
 
 import android.content.Intent;
+import android.nfc.FormatException;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -93,26 +94,21 @@ public class ItemActivity extends AppCompatActivity {
         Item item;
 
         // Date format
-        DateFormat format = new SimpleDateFormat("yyyy/mm/dd");
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 
         // If in edit mode, grab the passed item and fill out the fields
-        if(intent.getStringExtra("mode").equals("edit"))
-        {
-            item = DatabaseHelper.GetRealm().where(Item.class).equalTo("id", String.valueOf(intent.getIntExtra("item", 1))).findFirst();
+        if(intent.getStringExtra("mode").equals("edit")) {
+            // Grab the id, then the item
+            long id = intent.getLongExtra("item", 1);
+            item = DatabaseHelper.GetRealm().where(Item.class).equalTo("id", id).findFirst();
 
+            // Setup fields
             etName.setText(item.getName());
             etBrand.setText(item.getBrand());
             etAmount.setText(item.getAmount());
 
-            try {
-                etPurchased.setText(format.parse(item.getPurchased().toString()).toString());
-                etBestBefore.setText(format.parse(item.getBestBefore().toString()).toString());
-            }
-            catch(ParseException e)
-            {
-                Toast.makeText(getApplicationContext(), "Error reading date", Toast.LENGTH_LONG).show();
-                finish();
-            }
+            etPurchased.setText(format.format(item.getPurchased()));
+            etBestBefore.setText(format.format(item.getBestBefore()));
         }
 
         btnSaveItem.setOnClickListener(new View.OnClickListener() {

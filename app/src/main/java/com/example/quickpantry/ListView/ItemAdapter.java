@@ -60,6 +60,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), ItemActivity.class);
                 intent.putExtra("item", item.getId());
+                intent.putExtra("mode", "edit");
                 getContext().startActivity(intent);
             }
         });
