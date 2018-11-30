@@ -1,9 +1,13 @@
 package com.example.quickpantry;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.quickpantry.Database.Category;
 import com.example.quickpantry.Database.DatabaseHelper;
@@ -73,6 +77,25 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings:
+                // Go to settings
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
     private void exampleData() {
