@@ -58,8 +58,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Open the item window in edit mode, passing this item's id
                 Intent intent = new Intent(getContext(), ItemActivity.class);
-                intent.putExtra("item", item.getId());
+                intent.putExtra("id", item.getId());
                 intent.putExtra("mode", "edit");
                 getContext().startActivity(intent);
             }

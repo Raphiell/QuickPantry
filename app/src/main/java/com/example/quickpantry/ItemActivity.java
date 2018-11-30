@@ -26,6 +26,8 @@ import com.example.quickpantry.Database.Category;
 import com.example.quickpantry.Database.DatabaseHelper;
 import com.example.quickpantry.Database.Item;
 
+import io.realm.Realm;
+
 
 public class ItemActivity extends AppCompatActivity {
     private TextView etName, etBrand, etAmount, etPurchased, etBestBefore;
@@ -36,7 +38,10 @@ public class ItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item);
 
         // Get intent
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
+
+        // Mode
+        final boolean edit = intent.getStringExtra("mode").equals("edit");
 
         // Grab all categories
         final Object[] categories = DatabaseHelper.GetRealm().where(Category.class).findAll().toArray();
@@ -63,7 +68,7 @@ public class ItemActivity extends AppCompatActivity {
         Button btnDelete = findViewById(R.id.btnDelete);
 
         // If this is a new item, no delete is needed
-        if(intent.getStringExtra("mode").equals("new"))
+        if(!edit)
         {
             btnDelete.setEnabled(false);
         }
@@ -90,17 +95,13 @@ public class ItemActivity extends AppCompatActivity {
         etPurchased.setOnClickListener(datePickerClickListener((EditText)etPurchased));
         etBestBefore.setOnClickListener(datePickerClickListener((EditText)etBestBefore));
 
-        // Potential item to edit
-        Item item;
-
         // Date format
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
 
         // If in edit mode, grab the passed item and fill out the fields
-        if(intent.getStringExtra("mode").equals("edit")) {
-            // Grab the id, then the item
-            long id = intent.getLongExtra("item", 1);
-            item = DatabaseHelper.GetRealm().where(Item.class).equalTo("id", id).findFirst();
+        if(edit) {
+            // Grab item
+            Item item = DatabaseHelper.GetRealm().where(Item.class).equalTo("id", intent.getLongExtra("id", 1)).findFirst();
 
             // Setup fields
             etName.setText(item.getName());
@@ -114,22 +115,42 @@ public class ItemActivity extends AppCompatActivity {
         btnSaveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 // Grab all the fields' values
-                String name, brand, amount;
-                Date purchased, bestBefore;
-                Category category;
+                final String name, brand, amount;
+                final Date purchased, bestBefore;
+                final Category category;
 
                 name = etName.getText().toString();
                 brand = etBrand.getText().toString();
                 amount = etAmount.getText().toString();
-
                 purchased = new Date(etPurchased.getText().toString());
                 bestBefore = new Date(etBestBefore.getText().toString());
-
                 category = (Category)(categories[spinner.getSelectedItemPosition()]);
 
-                // Save the item and return to the previous view
-                DatabaseHelper.AddItem(name, amount, brand, purchased, bestBefore, "", category);
+                // If this is a new item, create it
+                if(!edit) {
+                    // Save the item
+                    DatabaseHelper.AddItem(name, amount, brand, purchased, bestBefore, "", category);
+                }
+                // Else edit
+                else {
+                    // Perform a transaction where we grab the item, set it's properties, and save it
+                    DatabaseHelper.GetRealm().executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            // Grab the item
+                            Item _item = realm.where(Item.class).equalTo("id", intent.getLongExtra("id", 1)).findFirst();
+
+                            // Save settings
+                            _item.setName(name);
+                            _item.setAmount(amount);
+                            _item.setBrand(brand);
+                            _item.setPurchased(purchased);
+                            _item.setBestBefore(bestBefore);
+                        }
+                    });
+                }
 
                 // Close
                 finish();
