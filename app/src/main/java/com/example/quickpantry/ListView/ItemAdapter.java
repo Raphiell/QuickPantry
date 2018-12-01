@@ -28,6 +28,11 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         _context = context;
     }
 
+    public void SetItems(List<Item> items)
+    {
+        _items = items;
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

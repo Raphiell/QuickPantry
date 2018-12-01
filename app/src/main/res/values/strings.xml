@@ -18,6 +18,19 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
+    <string name="orderBy">Default Ordering</string>
+    <string-array name="defaultOrdering">
+        <item>Newest First</item>
+        <item>Closest Expiry</item>
+        <item>Item Name Alphabetical</item>
+        <item>Brand Name Alphabetical</item>
+    </string-array>
+    <string-array name="defaultOrderingValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
