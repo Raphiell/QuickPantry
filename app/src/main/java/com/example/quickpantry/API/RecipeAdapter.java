@@ -2,13 +2,18 @@ package com.example.quickpantry.API;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.renderscript.ScriptGroup;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.quickpantry.Database.Item;
@@ -16,6 +21,9 @@ import com.example.quickpantry.ItemActivity;
 import com.example.quickpantry.R;
 import com.example.quickpantry.Recipe;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 public class RecipeAdapter extends ArrayAdapter<Recipe> {
@@ -53,6 +61,7 @@ public class RecipeAdapter extends ArrayAdapter<Recipe> {
         if(recipe != null)
         {
             ((TextView)view.findViewById(R.id.tvName)).setText(recipe.getName());
+            //((ImageView)view.findViewById(R.id.ivImage)).setImageDrawable(recipe.getImage());
         }
 
         view.setOnClickListener(new View.OnClickListener() {

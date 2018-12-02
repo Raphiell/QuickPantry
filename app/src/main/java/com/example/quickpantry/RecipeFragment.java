@@ -1,5 +1,6 @@
 package com.example.quickpantry;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
@@ -23,6 +26,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +37,14 @@ public class RecipeFragment extends Fragment {
     // Required empty constructor
     public RecipeFragment() {}
 
+    // These have since changed!
     private static String APP_ID = "235ba005";
     private static String APP_KEY = "52bc5ee83ef4b5d31a00f611232b069d";
 
+    private String query = "chicken";
+
     private String tag = "QueueTag";
-    private String url = "https://api.edamam.com/search?q=chicken&app_id=" + APP_ID + "&app_key=" + APP_KEY;
+    private String url;
 
     private ArrayList<Recipe> recipes;
 
@@ -51,10 +60,11 @@ public class RecipeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recipes = new ArrayList<>();
-
         // Get the volley request Queue
         requestQueue = Volley.newRequestQueue(getContext());
+
+        // Get Edit text
+        final EditText etSearch = getView().findViewById(R.id.etSearch);
 
         // Setup search button
         Button btnSearch = getView().findViewById(R.id.btnSearch);
@@ -62,6 +72,16 @@ public class RecipeFragment extends Fragment {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Clear out the old search results
+                recipes = new ArrayList<>();
+
+                // Setup url
+                if(!etSearch.getText().toString().isEmpty()) {
+                    query = etSearch.getText().toString();
+                }
+
+                url = "https://api.edamam.com/search?q=" + query + "&app_id=" + APP_ID + "&app_key=" + APP_KEY + "&to=30";
+
                 // Grab the data from the recipes website, populating the recipes list
                 getData();
             }
@@ -87,7 +107,18 @@ public class RecipeFragment extends Fragment {
                     {
                         JSONObject hit = hits.getJSONObject(i).getJSONObject("recipe");
 
-                        recipes.add(new Recipe(hit.getString("label"), hit.getString("url")));
+                        // Image
+                        Drawable drawable = null;
+
+                        /* Get the image
+                        try {
+                            InputStream inputStream = (InputStream) new URL(hit.getString("image")).getContent();
+                            drawable = Drawable.createFromStream(inputStream, "");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } */
+
+                        recipes.add(new Recipe(hit.getString("label"), hit.getString("url"), drawable));
                     }
 
                     // Populate the list view
