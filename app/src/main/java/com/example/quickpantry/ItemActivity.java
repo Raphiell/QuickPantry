@@ -118,44 +118,53 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // Grab all the fields' values
-                final String name, brand, amount;
-                final Date purchased, bestBefore;
-                final Category category;
+                // First validate if everything was entered
+                if(validate()) {
+                    // Grab all the fields' values
+                    final String name, brand, amount;
+                    final Date purchased, bestBefore;
+                    final Category category;
 
-                name = etName.getText().toString();
-                brand = etBrand.getText().toString();
-                amount = etAmount.getText().toString();
-                purchased = new Date(etPurchased.getText().toString());
-                bestBefore = new Date(etBestBefore.getText().toString());
-                category = (Category)(categories[spinner.getSelectedItemPosition()]);
+                    name = etName.getText().toString();
+                    brand = etBrand.getText().toString();
+                    amount = etAmount.getText().toString();
+                    purchased = new Date(etPurchased.getText().toString());
+                    bestBefore = new Date(etBestBefore.getText().toString());
+                    category = (Category) (categories[spinner.getSelectedItemPosition()]);
 
-                // If this is a new item, create it
-                if(!edit) {
-                    // Save the item
-                    DatabaseHelper.AddItem(name, amount, brand, purchased, bestBefore, "", category);
+                    // If this is a new item, create it
+                    if (!edit) {
+                        // Save the item
+                        DatabaseHelper.AddItem(name, amount, brand, purchased, bestBefore, "", category);
+                    }
+                    // Else edit
+                    else {
+                        // Perform a transaction where we grab the item, set it's properties, and save it
+                        DatabaseHelper.GetRealm().executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                // Grab the item
+                                Item _item = realm.where(Item.class).equalTo("id", intent.getLongExtra("id", 1)).findFirst();
+
+                                // Save settings
+                                _item.setName(name);
+                                _item.setAmount(amount);
+                                _item.setBrand(brand);
+                                _item.setPurchased(purchased);
+                                _item.setBestBefore(bestBefore);
+                            }
+                        });
+                    }
+
+                    // Close
+                    finish();
                 }
-                // Else edit
-                else {
-                    // Perform a transaction where we grab the item, set it's properties, and save it
-                    DatabaseHelper.GetRealm().executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            // Grab the item
-                            Item _item = realm.where(Item.class).equalTo("id", intent.getLongExtra("id", 1)).findFirst();
-
-                            // Save settings
-                            _item.setName(name);
-                            _item.setAmount(amount);
-                            _item.setBrand(brand);
-                            _item.setPurchased(purchased);
-                            _item.setBestBefore(bestBefore);
-                        }
-                    });
+                else
+                {
+                    // Else give dialog that they didn't enter everything!
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                    builder.setMessage("You need to enter all fields").show();
                 }
-
-                // Close
-                finish();
             }
         });
 
@@ -239,5 +248,20 @@ public class ItemActivity extends AppCompatActivity {
                 cdp.show(getSupportFragmentManager(),"Something");
             }
         };
+    }
+
+    /**
+     * Validates if all the fields have values entered
+     * @return True if all fields have values, false otherwise
+     */
+    private boolean validate()
+    {
+        if(etName.getText().toString().isEmpty() || etAmount.getText().toString().isEmpty() || etBrand.getText().toString().isEmpty() || etBestBefore.getText().toString().isEmpty() || etPurchased.getText().toString().isEmpty())
+        {
+            // If any field is empty, return false
+            return false;
+        }
+        // Otherwise return true
+        return true;
     }
 }

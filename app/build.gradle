@@ -35,4 +35,7 @@ dependencies {
 
     // Better pickers
     implementation 'com.code-troopers.betterpickers:library:3.1.0'
+
+    // Add volley library for HTTP requests
+    implementation 'com.android.volley:volley:1.1.1'
 }

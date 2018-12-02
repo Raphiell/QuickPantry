@@ -118,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
         //Create A Category
         Category category = DatabaseHelper.AddCategory("Produce");
         Category category2 = DatabaseHelper.AddCategory("Pantry");
+        Category category3 = DatabaseHelper.AddCategory("Frozen");
+        Category category4 = DatabaseHelper.AddCategory("Refrigerator");
 
         // Add an item
         DatabaseHelper.AddItem("Fudge bars", "A few", "Hershey", new Date(), new Date(System.currentTimeMillis() + (1000) * (60) * (60) * (24) * (20)), "", category);
