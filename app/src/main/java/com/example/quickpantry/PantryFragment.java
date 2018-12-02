@@ -38,9 +38,6 @@ import io.realm.RealmObject;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
-/**
- */
-
 public class PantryFragment extends Fragment {
     private ItemAdapter itemAdapter;
     private ListView listView;

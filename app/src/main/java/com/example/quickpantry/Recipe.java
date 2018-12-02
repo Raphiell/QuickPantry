@@ -3,6 +3,12 @@ package com.example.quickpantry;
 public class Recipe {
     private String url, name;
 
+    public Recipe(String name, String url)
+    {
+        this.url = url;
+        this.name = name;
+    }
+
     public String getUrl() {
         return url;
     }
